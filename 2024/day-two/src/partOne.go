@@ -7,7 +7,6 @@ import (
     "bufio"
     "strings"
     "strconv"
-    "math"
 )
 
 func main() {
@@ -28,20 +27,27 @@ func main() {
     for inputBuf.Scan() {
         inputLine := inputBuf.Text()
         nums := strings.Fields(inputLine)
+        levels := len(nums) - 1
         var isIncreasing bool
         var isUnsafe bool
     
-        for i := 0; i < len(nums) - 1; i++ {
+        for i := 0; i < levels; i++ {
             firstVal, firstErr := strconv.Atoi(nums[i])
             secondVal, secondErr := strconv.Atoi(nums[i + 1])
 
-            if firstErr != nil || secondErr != nil {
-                log.Fatal(err)
+            if firstErr != nil {
+                log.Fatal(firstErr)
+            } else if secondErr != nil {
+                log.Fatal(secondErr)
             }
 
             diff := secondVal - firstVal
-            absDiff := math.Abs(float64(diff))
+            absDiff := diff
             isCurrentlyIncreasing := diff >= 0
+
+            if !isCurrentlyIncreasing {
+                absDiff = -diff
+            }
 
             if i == 0 {
                 isIncreasing = isCurrentlyIncreasing

@@ -47,14 +47,21 @@ func main() {
 
 			for id := firstId; id <= secondId; id++ {
 				idString := strconv.Itoa(id)
+				
+				for divideSize := 2; divideSize <= len(idString); divideSize++ {
+					groupSize := len(idString) / divideSize
+					capturedSegment := idString[:groupSize]
+					matching := true
 
-				half := len(idString) / 2
+					for startIndex := groupSize; startIndex < len(idString); startIndex += groupSize {
+						nextSegment := idString[startIndex:min(startIndex + groupSize, len(idString))]
+						matching = matching && capturedSegment == nextSegment 
+					}
 
-				firstHalf := idString[:half]
-				secondHalf := idString[half:]
-
-				if firstHalf == secondHalf {
-					invalidIdSum += id
+					if matching {
+						invalidIdSum += id
+						break
+					}
 				}
 			}
 		}
